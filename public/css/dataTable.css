@@ -1,0 +1,19 @@
+.dataTables_filter{
+    margin-right: 10%;
+    margin-top: 2rem;
+}
+
+#users_paginate{
+    margin-right: 7.5%;
+}
+
+
+thead{
+    background-color: black;
+    color : white;
+}
+
+
+main{
+    overflow-x: hidden;
+}

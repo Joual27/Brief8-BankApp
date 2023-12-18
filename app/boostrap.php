@@ -2,18 +2,29 @@
 
 require_once 'config/config.php';
 
+require_once 'helpers/regexValidations.php';
+
+function Autoloader($class) {
+    $paths = [
+        APPROOT."/libraries/",
+        APPROOT."/services/"
+    ];
+
+    foreach ($paths as $path) {
+        $file = $path . $class . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+}
 
 
-// Autoload Libraries 
-
-
-
-spl_autoload_register(function($className){
-
-    require_once 'libraries/' . $className . '.php';
-
-});
+spl_autoload_register('Autoloader');
 
 $init = new Core();
+
+
+
+
 
 ?>
