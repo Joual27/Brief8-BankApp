@@ -3,7 +3,7 @@
 
 
 
-class Address {
+class Adress {
     private $addressId;
     private $ville;
     private $rue;

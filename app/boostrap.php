@@ -7,8 +7,10 @@ require_once 'helpers/regexValidations.php';
 function Autoloader($class) {
     $paths = [
         APPROOT."/libraries/",
-        APPROOT."/services/"
+        APPROOT."/services/",
+        APPROOT."/models/"
     ];
+
 
     foreach ($paths as $path) {
         $file = $path . $class . '.php';
@@ -20,6 +22,7 @@ function Autoloader($class) {
 
 
 spl_autoload_register('Autoloader');
+
 
 $init = new Core();
 

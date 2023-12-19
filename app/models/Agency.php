@@ -2,7 +2,6 @@
 
 
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bank-app/app/services/AgencyService.php");
 
 
 class Agency{
@@ -10,19 +9,12 @@ class Agency{
     private $longitude;
     private $latitude ;
     private $bankId ;
-    private $adressId;
+    private Adress $adress;
   
 
     
-
-    
-    public function __construct($agencyId,$longitude,$latitude,$bankId,$adressId){
-        $this->agencyId = $agencyId;
-        $this->longitude = $longitude;
-        $this->latitude = $latitude;
-        $this->bankId = $bankId;
-        $this->adressId = $adressId;
-    
+    public function __construct(){
+       
     }
 
     public function getAgencyId(){
@@ -51,13 +43,12 @@ class Agency{
         $this->bankId = $bankId;
     }
     public function getAdressId(){
-        return $this->adressId;
+        return $this->adress;
     }
-    public function setAdressId($adressId){
-        $this->adressId = $adressId;
-    }
-
+    public function setAdressId(Adress $adress){
+        $this->adress = $adress;
 }
 
+}
 
 ?>

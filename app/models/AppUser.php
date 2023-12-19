@@ -8,16 +8,16 @@ class AppUser{
     private $username;
     private $password;
     private Agency $agency;
-    private Address $adress;
+    private Adress $adress;
 
     public function __construct(){
 
     }
 
-    public function getUserUd(){
+    public function getUserId(){
         return $this->userId;
     }
-    public function setUserUd($userId){
+    public function setUserId($userId){
        $this->userId = $userId;
     }
     public function getUsername(){
@@ -37,14 +37,14 @@ class AppUser{
         return $this->agency;
     }
 
-    public function setAgency($agency){
+    public function setAgency(Agency $agency){
         $this->agency = $agency;
     }
     public function getAdress(){
         return $this->adress;
     }
 
-    public function setAdress($adress){
+    public function setAdress(Adress $adress){
         $this->adress = $adress;
     }
 

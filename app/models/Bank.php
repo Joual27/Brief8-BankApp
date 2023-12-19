@@ -9,10 +9,8 @@ class Bank {
     private $bankName;
     private $logo ;
 
-    public function __construct($bankId,$bankName,$logo){
-       $this->bankId = $bankId;
-       $this->bankName = $bankName;
-       $this->logo = $logo;
+    public function __construct(){
+       
     }
 
     public function getBankId(){

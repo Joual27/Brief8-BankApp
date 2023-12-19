@@ -1,15 +1,12 @@
 <?php
 
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bank-app/app/repositories/Database.php");
-
-require_once("ServiceBankInterface.php");
 
 class BankService implements ServiceBankInterface{
      
     private $db;
 
-    public function __construct($db){
+    public function __construct(Database $db){
         $this->db = $db;
     }
 
@@ -17,7 +14,7 @@ class BankService implements ServiceBankInterface{
         $bringBanks = "select * from bank";
         $this->db->query($bringBanks);
         try{
-            return $this->db->fetchMultipleRows();
+            return $this->db->fetchMultipleRow();
         }
         catch(PDOException $e){
             die($e->getMessage());
@@ -61,7 +58,7 @@ class BankService implements ServiceBankInterface{
             catch(PDOException $e){
                 die($e->getMessage());
             }
-                }
+        }
 
 }
 

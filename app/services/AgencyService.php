@@ -1,7 +1,6 @@
 <?php
 
-require_once($_SERVER["DOCUMENT_ROOT"]."/bank-app/app/repositories/Database.php");
-require_once("AgencyServiceInterface.php");
+
 
 class AgencyService implements AgencyInterface{
 
@@ -12,7 +11,6 @@ class AgencyService implements AgencyInterface{
         $this->db = $db;
     }
 
-    
     public function getAllAgencies(){
         $fetchAllAgenciesData = "select * from agency join adress on agency.addressID = adress.addressID";
         $this->db->query($fetchAllAgenciesData);

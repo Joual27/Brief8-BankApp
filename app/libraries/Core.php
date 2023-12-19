@@ -16,8 +16,8 @@
             }
         }
         require_once '../app/controllers/' . $this->currentController . '.php';
-
         $this->currentController = new $this->currentController;
+
 
         if (isset($url[1])) {
             if (method_exists($this->currentController , $url[1])) {
@@ -31,7 +31,6 @@
     }
 
     public function getUrl() {
-
         if (isset($_GET['url'])) {
             $url = rtrim($_GET['url'] , '/');
             $url = filter_var($url , FILTER_SANITIZE_URL);
@@ -39,7 +38,7 @@
             return $url;
         }
     }    
-    }
+}
 
 ?> 
 

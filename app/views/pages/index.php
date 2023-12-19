@@ -1,4 +1,4 @@
-<?php require APPROOT . '/views/incFile/header.php'; ?>
+<?php require APPROOT . '/views/incFile/htmlHeader.php'; ?>
 
 <a href="<?php echo URLROOT ;?>/pages/login">Go to login</a>
 
