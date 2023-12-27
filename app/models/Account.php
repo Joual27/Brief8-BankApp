@@ -3,10 +3,11 @@
 <?php
 
 
-class Account{
+abstract class Account{
     private $accountId;
     private $balance;
     private $RIB ;
+    private $type;
     
     private AppUser $appUser;
     public function __construct(){
@@ -30,6 +31,12 @@ class Account{
     }
     public function setRIB($RIB){
         $this->RIB = $RIB;
+    }
+    public function getType(){
+        return $this->type;
+    }
+    public function setType($type){
+        $this->type = $type;
     }
     public function getAppUser(){
         return $this->appUser;

@@ -17,6 +17,16 @@ class UserServiceImp implements UserServiceI{
           die($e->getMessage());
        }
     }
+    public function getAllClients(){
+       $fetchUsers = "SELECT * FROM users JOIN adress ON users.addressId = adress.addressId JOIN roleofuser ON users.userId = roleofuser.userId WHERE roleofuser.roleName = 'client' ";
+       $this->db->query($fetchUsers);
+       try{
+        return $this->db->fetchMultipleRow();
+       }
+       catch(PDOException $e){
+          die($e->getMessage());
+       }
+    }
     public function getUserById($userId){
        $fetchUser = "SELECT * FROM users JOIN adress ON users.addressID = adress.addressID JOIN roleofuser ON users.userID = roleofuser.userID WHERE users.userID = :id";
        $this->db->query($fetchUser);

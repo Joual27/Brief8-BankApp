@@ -26,8 +26,4 @@ spl_autoload_register('Autoloader');
 
 $init = new Core();
 
-
-
-
-
 ?>

@@ -19,7 +19,7 @@
             <button class="py-[0.6rem] px-[1.2rem] bg-indigo-500 text-white font-semibold rounded-lg"><a href="<?php echo URLROOT ?>/admin/addBank">+ Add Bank</a></button>
         </div>
     <div>
-        <table id="users" style="width: 79% ; margin-left : 16% ;">
+        <table id="users" style="width: 79% ; margin-left : 16%;">
                 <thead>
                     <tr>
                         <td>ID</td>

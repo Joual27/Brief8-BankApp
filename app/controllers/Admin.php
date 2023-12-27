@@ -4,9 +4,6 @@
 
 
 class Admin extends Controller{
-
-
-
     public function dashboard(){
         $db = new Database();
         $statsService = new StatsServiceImp($db);
@@ -266,7 +263,7 @@ class Admin extends Controller{
 
     public function accountsDashboard(){
         $db = new Database();
-        $accountService = new AccountServiceImp($db);
+        $accountService = new Active_AccountImp($db);
         try{
             $accounts = $accountService->getAllAccounts();
             $data =[
@@ -283,7 +280,7 @@ class Admin extends Controller{
     public function addAccount(){
         $db = new Database();
         $userService = new UserServiceImp($db);
-        $users = $userService->getAllUsers();
+        $users = $userService->getAllClients();
         $data = [
             "users" => $users,
             "error" => ""
@@ -298,31 +295,10 @@ class Admin extends Controller{
                 $data["error"] = "all fields are required !";
             }
             else {
-                if($type == "main"){
-                    $accountService = new AccountServiceImp($db);
+                if($type == "active"){
+                    $accountService = new Active_AccountImp($db);
                     $id = uniqid();
                     $rib = $accountService->generateRib();
-                    $holder = new AppUser();
-                    $holder->setUserId($userId);
-
-                    $account = new Account();
-                    $account->setAccountId($id);
-                    $account->setBalance($balance);
-                    $account->setRIB($rib);
-                    $account->setAppUser($holder);
-                    try{
-                        $accountService->addAccount($account);
-                        header("Location:".URLROOT."/admin/accountsDashboard");
-                    }
-                    catch(PDOException $e){
-                        die($e->getMessage());
-                    }
-
-                }
-                else if($type == "active"){
-                    $activeAccountService = new Active_AccountImp($db);
-                    $id = uniqid();
-                    $rib = $activeAccountService->generateRib();
                     $holder = new AppUser();
                     $holder->setUserId($userId);
 
@@ -331,8 +307,31 @@ class Admin extends Controller{
                     $account->setBalance($balance);
                     $account->setRIB($rib);
                     $account->setAppUser($holder);
+                    $account->setType($type);
                     try{
-                        $activeAccountService->addAccount($account);
+                        $accountService->addAccount($account);
+                        header("Location:".URLROOT."/admin/accountsDashboard");
+                    }
+                    catch(PDOException $e){
+                        die($e->getMessage());
+                    }
+                }
+                else{
+                    $accountService = new Saving_AccountImp($db);
+                    $id = uniqid();
+                    $rib = $accountService->generateRib();
+                    $holder = new AppUser();
+                    $holder->setUserId($userId);
+
+                    $account = new Saving_account();
+                    $account->setAccountId($id);
+                    $account->setBalance($balance);
+                    $account->setRIB($rib);
+                    $account->setAppUser($holder);
+                    $account->setType($type);
+
+                    try{
+                        $accountService->addAccount($account);
                         header("Location:".URLROOT."/admin/accountsDashboard");
                     }
                     catch(PDOException $e){
@@ -346,6 +345,116 @@ class Admin extends Controller{
        
         $this->view("admin/addAccount",$data);
     }
+
+    public function deleteAccount(){
+        $id = $_GET["id"];
+        $db = new Database();
+        $accountService = new Active_AccountImp($db);
+        try{
+            $accountService->deleteAccount($id);
+            header("Location:".URLROOT."/admin/accountsDashboard");
+        }
+        catch(PDOException $e){
+            die($e->getMessage());
+        }
+        $this->view("admin/deleteUser");
+    }
+
+
+    public function transactionsDashboard(){
+        $db = new Database();
+        $transactionService = new TransactionServiceImp($db);
+        try{
+            $transactions = $transactionService->getAllTransactions();
+            $data = [
+                "transactions" => $transactions
+            ];
+        }
+        catch(PDOException $e){
+            die($e->getMessage());
+        }
+        $this->view("admin/transactionsDashboard",$data);
+    }
+
+    public function addTransaction(){
+        $db = new Database();
+        $accountService = new Active_AccountImp($db);
+        $accounts = $accountService->getAllActiveAccounts();
+        $data = [
+            "accounts" => $accounts,
+            "error" => ""
+        ];
+
+
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $id = uniqid();
+            $montant = $_POST["montant"];
+            $type = $_POST["type"];
+            $accountID = $_POST["account"];
+            
+            if(empty($montant) || empty($type) || empty($accountID)){
+                $data["error"] = "all fields are required !";
+            }
+            else{
+                $affectedAccount = $accountService->getAccountById($accountID);
+                if($type == "debit" && $affectedAccount->balance < $montant ){
+                    $data["error"] = "insuffisant balance !";
+                }
+                else{
+                    $account = new Active_Account();
+                    $account->setAccountId($accountID);
+                    $transactionService = new TransactionServiceImp($db);
+                    $transaction = new Transaction();
+                    $transaction->setTransactionID($id);
+                    $transaction->setMontant($montant);
+                    $transaction->setType($type);
+                    $transaction->setAccount($account);
+                    try{
+                        $transactionService->addTransaction($transaction);
+                        $accountService->updateBalance($accountID,$montant,$type,$affectedAccount->balance);
+                        header("Location:".URLROOT."/admin/transactionsDashboard");
+                    }
+                    catch(PDOException $e){
+                        die($e->getMessage());
+                    }
+                }
+            }
+
+        }
+        $this->view("admin/addTransaction",$data);
+    }
+
+    public function deleteTransaction(){
+         
+        $id = $_GET["id"];
+        $db = new Database();
+        $transactionService = new TransactionServiceImp($db);
+
+        try{
+            $transactionService->deleteTransaction($id);
+            header("Location:".URLROOT."/admin/transactionsDashboard");
+        }
+        catch(PDOException $e){
+            die($e->getMessage());
+        }
+
+
+        $this->view("admin/deleteTransaction");
+    }
+
+    public function transactionsOfAccount(){
+        
+        $id = $_GET["id"];
+        $db = new Database();
+        $transactionService = new TransactionServiceImp($db);
+        $transactionsOfAcc = $transactionService->getTransactionsOfAccount($id);
+
+        $data =[
+           "transactions" => $transactionsOfAcc
+        ];
+        $this->view("admin/transactionsOfAccount",$data);
+    }
+
 
 }
 

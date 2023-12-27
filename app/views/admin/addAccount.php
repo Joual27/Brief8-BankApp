@@ -41,7 +41,6 @@ else if($_SESSION["roleName"] == "client"){
                             <label>type</label>
                             <select name="type" style="width : 100% !important;">
                                 <option value="">Select account's type</option>
-                                <option value="main">Main</option>
                                 <option value="saving">saving</option>
                                 <option value="active">active</option>
                             </select>

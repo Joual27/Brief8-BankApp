@@ -11,11 +11,12 @@ class Saving_AccountImp implements Saving_AccountI{
    
 
     public function addAccount(Saving_account $account){
-        $addAccount = "INSERT INTO saving_account VALUES (:id , :balance , :rib , :userID)";
+        $addAccount = "INSERT INTO account VALUES (:id , :balance , :rib , :userID , :acc_type)";
         $this->db->query($addAccount);
         $this->db->bind(":id",$account->getAccountID());
         $this->db->bind(":balance",$account->getBalance());
         $this->db->bind(":rib",$account->getRIB());
+        $this->db->bind(":acc_type",$account->getType());
         $this->db->bind(":userID",$account->getAppUser()->getUserId());
 
         try{

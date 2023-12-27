@@ -20,7 +20,7 @@ else if($_SESSION["roleName"] == "client"){
  require APPROOT . '/views/incFile/userInfo.php'; 
 ?>
     <div class="ml-[16%] mt-[1rem]">
-        <button class="py-[0.6rem] px-[1.2rem] bg-indigo-500 text-white font-semibold rounded-lg"><a href="<?php echo URLROOT ?>/admin/addAccount">+ Add Account</a></button>
+        <button class="py-[0.6rem] px-[1.2rem] bg-indigo-500 text-white font-semibold rounded-lg"><a href="<?php echo URLROOT ?>/admin/addAccount" style="color : white !important;text-decoration : none;">+ Add Account</a></button>
     </div>
 
    <div>
@@ -42,11 +42,16 @@ else if($_SESSION["roleName"] == "client"){
                     <td><?= $account->balance ?></td>
                     <td><?= $account->rib?></td>
                     <td><?= $account->username?></td>
-                    <td><?= $account->account_type?></td>
-                    <td>
+                    <td><?= $account->type?></td>
+                    <td class="flex gap-[10px]">
                         <a href='<?=URLROOT?>/admin/deleteAccount?id=<?= $account->accountID ?>' class='flex items-center justify-center bg-rose-500 text-white w-[40px] h-[40px]'>
                             <i class='fa-solid fa-trash'></i>
                         </a>
+                        <?php if($account->type == "active"){ ?>
+                            <button class="bg-indigo-500 px-[0.4rem] rounded-lg font-semibold">
+                               <a href="<?=URLROOT?>/admin/transactionsOfAccount?id=<?= $account->accountID ?>" class="no-underline text-white">See Transactions</a>
+                            </button>
+                        <?php } ?>
                     </td>
                   </tr>
  
